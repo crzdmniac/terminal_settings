@@ -16,16 +16,10 @@
       state: latest
       update_cache: yes
 
-#  - name: Check if ohmyzsh exists
-#    stat:
-#      path: ~/.ohmyzsh/
-#    register: ohmyzsh
-
   - name: Install ohmyzsh unattended
     shell: >
       wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh &&
       sh install.sh --unattended
-#    when: not ohmyzsh.exists
 
   - name: Clone Powerlevel10k theme
     command: "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k"
