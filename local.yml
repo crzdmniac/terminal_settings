@@ -1,0 +1,34 @@
+---
+- hosts: localhost
+  connection: local
+
+  tasks:
+  - name: install packages
+    package:
+      name:
+        - curl
+        - git
+        - htop
+        - zsh
+        - neofetch
+  - name: Check if ohmyzsh exists
+    stat:
+      path: ~/.ohmyzsh
+    register: ohmyzsh
+
+  - name: Install ohmyzsh unattended
+    command: "sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended"
+    when: not ohmyzsh.exists
+
+  - name: copy .zshrc file
+    copy:
+     src: files/zshrc
+     dest: ~/.bashrc
+
+  - name: copy .p10k directory
+    copy:
+     src: files/p10k
+     dest: ~/.p10k
+
+  - name: Change terminal to zsh
+    command: "chsh -s /bin/zsh"
