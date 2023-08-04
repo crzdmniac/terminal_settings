@@ -51,3 +51,7 @@
     user:
       name: "{{ the_user }}"
       shell: /bin/zsh
+
+  - name: source the .zshrc file
+    shell: >
+      source ~/.zshrc
