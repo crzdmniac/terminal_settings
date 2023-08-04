@@ -4,31 +4,46 @@
 
   tasks:
   - name: install packages
+    become: yes
     package:
       name:
-        - curl
-        - git
-        - htop
-        - zsh
-        - neofetch
-  - name: Check if ohmyzsh exists
-    stat:
-      path: ~/.ohmyzsh
-    register: ohmyzsh
+      - curl
+      - git
+      - htop
+      - zsh
+      - neofetch
+      state: latest
+      update_cache: yes
+
+#  - name: Check if ohmyzsh exists
+#    stat:
+#      path: ~/.ohmyzsh/
+#    register: ohmyzsh
 
   - name: Install ohmyzsh unattended
-    command: "sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended"
-    when: not ohmyzsh.exists
+    shell: >
+      wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh &&
+      sh install.sh --unattended
+#    when: not ohmyzsh.exists
+
+  - name: Clone Powerlevel10k theme
+    command: "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k"
+
+  - name: Clone zsh-autosuggestions
+    command: "git clone https://github.com/zsh-users/zsh-autosuggestions.git ~/.oh-my-zsh/plugins/zsh-autosuggestions"
+
+  - name: Clone zsh-syntax-highlightingd
+    command: "git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/plugins/zsh-syntax-highlighting"
 
   - name: copy .zshrc file
     copy:
      src: files/zshrc
-     dest: ~/.bashrc
+     dest: ~/.zshrc
 
-  - name: copy .p10k directory
+  - name: copy p10k.zsh file
     copy:
-     src: files/p10k
-     dest: ~/.p10k
+     src: files/p10k.zsh
+     dest: ~/.p10k.zsh
 
   - name: Change terminal to zsh
     command: "chsh -s /bin/zsh"
