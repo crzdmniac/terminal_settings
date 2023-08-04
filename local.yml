@@ -46,5 +46,4 @@
      dest: ~/.p10k.zsh
 
   - name: Change terminal to zsh
-    become: yes
-    command: "chsh -s /bin/zsh"
+    command: "chsh -s $(which zsh)"
