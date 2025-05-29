@@ -12,7 +12,7 @@
       - git
       - htop
       - zsh
-      - neofetch
+      - fastfetch
       state: latest
       update_cache: yes
 
